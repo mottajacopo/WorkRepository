@@ -1,7 +1,9 @@
 package com.mafi.andrea.audiorecorder;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 public class STT extends AsyncTask <String, String, Void> {
 
@@ -64,16 +67,22 @@ public class STT extends AsyncTask <String, String, Void> {
                 public void onTranscription(SpeechRecognitionResults transcript) {
                     System.out.println(transcript);
 
-                    resultList = transcript.getResults();
+                    //resultList = transcript.
                     //long i = transcript.getResultIndex();
                     //temp = (transcript.getResults().get((int)i).toString());
-                    result = resultList.contains(mContext.getString(R.string.check_phrase));
+                   // result = resultList.contains(mContext.getString(R.string.check_phrase));
+                      temp = (transcript.getResults().get(0).toString());
+                      result = temp.contains(mContext.getString(R.string.check_phrase));
                 }
             });
+            //delay 10 sec
+            Thread.currentThread().sleep(10000);
             result = result;
         }
         catch (FileNotFoundException e){
             Log.e(TAG,"File not found");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -90,3 +99,4 @@ public class STT extends AsyncTask <String, String, Void> {
         }
     }
 }
+
