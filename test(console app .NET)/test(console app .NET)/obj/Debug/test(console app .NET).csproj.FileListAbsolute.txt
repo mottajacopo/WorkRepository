@@ -1,7 +1,0 @@
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\bin\Debug\test_console_app.NET_.exe.config
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\bin\Debug\test_console_app.NET_.exe
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\bin\Debug\test_console_app.NET_.pdb
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\obj\Debug\test(console app .NET).csprojResolveAssemblyReference.cache
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\obj\Debug\test(console app .NET).csproj.CoreCompileInputs.cache
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\obj\Debug\test_console_app.NET_.exe
-C:\Git\WorkRepository\test(console app .NET)\test(console app .NET)\obj\Debug\test_console_app.NET_.pdb
