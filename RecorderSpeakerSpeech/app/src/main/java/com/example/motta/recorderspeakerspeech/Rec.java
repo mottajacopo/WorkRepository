@@ -6,6 +6,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.widget.Toast;
@@ -80,7 +81,8 @@ public class Rec extends AsyncTask<String,Void,String> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        Toast.makeText(context,"Start Recording", Toast.LENGTH_SHORT).show();
+        showToastMessage("start", 500);
+        //Toast.makeText(context,"Start Recording", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -533,7 +535,8 @@ public class Rec extends AsyncTask<String,Void,String> {
 
                 /**/
 
-                String recognizedSpeaker = "Unknown" + ", not speaker" + String.valueOf(relativeFrequencies.indexOf(relativeFrequenciesCopy.get(0)) + 1) + " for " + String.valueOf(-relativeFrequenciesCopy.get(0)) + " frames";
+                int i = Integer.valueOf(relativeFrequenciesCopy.get(0).intValue());
+                String recognizedSpeaker = "Unknown" + ", not speaker" + String.valueOf(i + 1) + " for " + String.valueOf(-relativeFrequenciesCopy.get(0)) + " frames";
 
                 for(int j = 0; j< numberOfTrainingSpeakers; j++)
                 {
@@ -541,7 +544,8 @@ public class Rec extends AsyncTask<String,Void,String> {
 
                     if(frequencies.get(j) >= percentages.get(speaker -1)*numberOfFramesPerSpeaker)
                     {
-                        recognizedSpeaker = names.get(speaker - 1) + " for " + String.valueOf(relativeFrequenciesCopy.get(j)) + " frames";
+                        int k = Integer.valueOf(relativeFrequenciesCopy.get(j).intValue());
+                        recognizedSpeaker = names.get(speaker - 1) + " for " + String.valueOf(k) + " frames";
                         break;
                     }
 
@@ -584,9 +588,19 @@ public class Rec extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String string) {
         super.onPostExecute(string);
         //Toast.makeText(context,"Ended Recording",Toast.LENGTH_LONG).show();
-        Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, string, Toast.LENGTH_LONG).show();
     }
 
-
+    public void showToastMessage(String text, int duration) {
+        final Toast toast = Toast.makeText(context , text, Toast.LENGTH_SHORT);
+        toast.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+            }
+        }, duration);
+    }
 
 }

@@ -16,7 +16,7 @@
 %libsvmwrite('modelSpeaker2.txt', model.sv_coef, model.SVs);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-model = generate_model ('modelli\modelMB.txt' , '-t 2 -w1 3.7 -w2 0.8 -c 1 -g 0.003');
+[ modelMJ , instance_matrix_MJ ] = generate_model ('modelli\modelMJ.txt' , '-t 2 -w1 3.7 -w2 0.8 -c 1 -g 0.003');
 
 %testing1(model);  %model from frase1
-testing2(model);  %model from frase2
+testing2(modelMJ_avg);  %model from frase2

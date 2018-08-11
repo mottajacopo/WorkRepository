@@ -3,6 +3,7 @@ package com.example.motta.recorderspeakerspeech;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -95,5 +96,7 @@ public class STT extends AsyncTask<String, String, Void> {
             Toast.makeText(mContext, "Verification failed", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
 
