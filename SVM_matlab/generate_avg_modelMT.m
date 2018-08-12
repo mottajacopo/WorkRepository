@@ -11,7 +11,7 @@ system('copy frase2\MT9.txt +  frase2\CC9.txt + frase2\MJ9.txt + frase2\MB9.txt 
 system('copy frase2\MT10.txt +  frase2\CC10.txt + frase2\MJ10.txt + frase2\MB10.txt modelli\modelMT10.txt');
 
 
-option = '-t 2 -c 100 -g 0.0003';
+option = '-t 2 -c 100 -g 0.003';
 
 [label_vector, instance_matrix] = libsvmread('modelli\modelMT1.txt');
 label_vector(1:399) = 1;

@@ -35,5 +35,8 @@ instance_matrix_MJ_avg = (instance_matrix_MJ1 + instance_matrix_MJ2 + instance_m
 
 modelMJ_avg = svmtrain(label_vector, instance_matrix_MJ_avg, option);
 
+libsvmwrite('modelSpeaker2.txt', modelMJ_avg.sv_coef, modelMJ_avg.SVs);
+
 testing2(modelMJ_avg);
+
 

@@ -54,6 +54,8 @@ public class Rec extends AsyncTask<String,Void,String> {
     private int nSamples = 0;
     private int nSamplesPerFrame = 0;
     private int nSamplesAlreadyProcessed = 0;
+    private float accuracySP1 ;
+    private float accuracySP2 ;
 
     private short[] audioData = null; //java codifica i campioni audio in degli short 16 bit
     private AudioRecord record = null;
@@ -175,7 +177,8 @@ public class Rec extends AsyncTask<String,Void,String> {
 //print features on file
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        String numberOfTest = strings[3];
+        //String numberOfTest = strings[3];
+        int numberOfTest = (Integer.parseInt(strings[3]));
         int numberOfTrainingSpeakers = 2;
         int totalNumberOfFeatures = 2 * (cepCoeffPerFrame.get(0).length);
         int numberOfFramesPerSpeaker = cepCoeffPerFrame.size();
@@ -382,10 +385,14 @@ public class Rec extends AsyncTask<String,Void,String> {
                 }
 
                 //svm.svm_save_model(storeDir + "/model.txt",model);
+                File check = new File( storeDir +"/testDataFormat" + speakerName+ Integer.toString(numberOfTest) + ".txt");
 
+                while(check.exists()) {
+                    numberOfTest++;
+                    check = new File( storeDir +"/testDataFormat" + speakerName+ Integer.toString(numberOfTest) + ".txt");
+                }
 
-                printFeaturesOnFileFormat(cepCoeffPerFrame,deltadelta, storeDir + "/testDataFormat" + speakerName + numberOfTest + ".txt",speaker);
-
+                printFeaturesOnFileFormat(cepCoeffPerFrame, deltadelta, storeDir + "/testDataFormat" + speakerName + numberOfTest + ".txt", speaker);
 
                 ArrayList<double[]> union = uniteAllFeaturesInOneList(cepCoeffPerFrame, deltadelta);//converto i dati di test in un array di svm_node
                 svm_node[][] testData = new svm_node[numberOfFramesPerSpeaker][totalNumberOfFeatures + 1];
@@ -490,12 +497,16 @@ public class Rec extends AsyncTask<String,Void,String> {
                 int speaker = - 1;
                 int maxFrequency = 0;
                 int frequencyForList = 0;
+                int frequency = 0;
+                int mostFrequency = 0;
+                double mostFrequentValue = 0;
 
                 ArrayList<Integer> frequencies = new ArrayList<>();
 
+
                 for(int i = 0; i< resultsList.size(); i++){
 
-                    frequencyForList = Collections.frequency(resultsList.get(i), new Double(1));
+                    frequencyForList = Collections.frequency(resultsList.get(0), new Double(1));
 
                     frequencies.add(i,frequencyForList);
 
@@ -506,6 +517,33 @@ public class Rec extends AsyncTask<String,Void,String> {
                     }
                     ****************/
 
+                }
+
+                double temp;
+                int temp2;
+                int counter1 = 0;
+                int counter2 = 0;
+
+                for (int i = 0; i<numberOfFramesPerSpeaker ; i++) {
+
+                    temp = resultsList.get(0).get(i);
+                    temp2 = (int)temp;
+
+                    if (temp2 == 1){
+                        counter1++;
+                    }
+                    accuracySP1 = (counter1*100/numberOfFramesPerSpeaker);
+                }
+
+                for (int i = 0; i<numberOfFramesPerSpeaker ; i++) {
+
+                    temp = resultsList.get(1).get(i);
+                    temp2 = (int)temp;
+
+                    if (temp2 == 1){
+                        counter2++;
+                    }
+                    accuracySP2 = (counter2*100/numberOfFramesPerSpeaker);
                 }
 
                 ArrayList<String> names = new ArrayList<>();
@@ -521,7 +559,7 @@ public class Rec extends AsyncTask<String,Void,String> {
                 /*****************
                 double percentOfAccuracy = percentages.get(speaker -1);
                 *****************/
-                /**/
+/*
                 ArrayList<Double> relativeFrequencies = new ArrayList<>();
                 ArrayList<Double> relativeFrequenciesCopy = new ArrayList<>();
 
@@ -533,10 +571,12 @@ public class Rec extends AsyncTask<String,Void,String> {
 
                 Collections.sort(relativeFrequenciesCopy,Collections.<Double>reverseOrder());
 
-                /**/
+
+
+
 
                 int i = Integer.valueOf(relativeFrequenciesCopy.get(0).intValue());
-                String recognizedSpeaker = "Unknown" + ", not speaker" + String.valueOf(i + 1) + " for " + String.valueOf(-relativeFrequenciesCopy.get(0)) + " frames";
+                String recognizedSpeaker = "Unknown" + ", not speaker" + String.valueOf(relativeFrequencies.indexOf(relativeFrequenciesCopy.get(0)) + 1) + " for " + String.valueOf(i) + " frames";
 
                 for(int j = 0; j< numberOfTrainingSpeakers; j++)
                 {
@@ -551,7 +591,8 @@ public class Rec extends AsyncTask<String,Void,String> {
 
                 }
 
-
+*/
+                String recognizedSpeaker = "Speaker 1 = " +(int)accuracySP1 +"% "+"Speaker 2 = " + (int)accuracySP2 + "% ";
                 return recognizedSpeaker;
                 /************************
                 if(maxFrequency >= percentOfAccuracy*numberOfFramesPerSpeaker) {
@@ -562,6 +603,17 @@ public class Rec extends AsyncTask<String,Void,String> {
                 }
 
                 return recognizedSpeaker;
+
+
+                 for (int i = 0; i<numberOfFramesPerSpeaker ; i++) {
+
+                 if (resultsList.get(0).get(i) = )
+
+
+
+                 }
+
+
                 **************************/
 
                 /////////////////////////////////////////////////
@@ -588,7 +640,7 @@ public class Rec extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String string) {
         super.onPostExecute(string);
         //Toast.makeText(context,"Ended Recording",Toast.LENGTH_LONG).show();
-        Toast.makeText(context, string, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
     }
 
     public void showToastMessage(String text, int duration) {
