@@ -17,6 +17,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import  static com.example.motta.recorderspeakerspeech.SupportFunctions.removeChar;
+
 
 
 public class STT extends AsyncTask<String, String, Void> {
@@ -63,19 +68,23 @@ public class STT extends AsyncTask<String, String, Void> {
 
                     boolean result = false;
 
+                    temp = transcript.getResults().get(0).getAlternatives().toString();
+                    temp = removeChar(temp);
+                    /*
                     for(int i =0; i< transcript.getResults().size(); i++)
                     {
-                        temp = transcript.getResults().get(i).toString();
-                        if(temp.contains(mContext.getString(R.string.check_phrase))){
-                            result = true;
-                        }
+                        temp = transcript.getResults().get(i).getAlternatives().toString();
+                        temp = removeChar(temp);
+                        //if(temp.contains(mContext.getString(R.string.check_phrase)))
                     }
-
+*/
                 }
             });
             //delay 10 sec
-            Thread.currentThread().sleep(10000);
-            result = result;
+            Thread.currentThread().sleep(5000);
+            if(temp.equals(mContext.getString(R.string.check_phrase))){
+                result = true;
+            }
         }
         catch (FileNotFoundException e){
             Log.e(TAG,"File not found");
@@ -90,11 +99,12 @@ public class STT extends AsyncTask<String, String, Void> {
         super.onPostExecute(aVoid);
 
         if(result) {
-            Toast.makeText(mContext, "Verification succeeded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Verification succeeded" + "\n" + "result = " + temp, Toast.LENGTH_LONG).show();
         }
         else{
-            Toast.makeText(mContext, "Verification failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Verification failed" + "\n" + "result = " + temp, Toast.LENGTH_LONG).show();
         }
+
     }
 
 

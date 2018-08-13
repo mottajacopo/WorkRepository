@@ -458,5 +458,22 @@ public class SupportFunctions {
 
         return  normVal;
     }
-    }
 
+    public static String removeChar (String temp2)
+    {
+        temp2 = temp2.replaceAll("\n"," ");
+        temp2 = temp2.replaceAll("confidence","");
+        temp2 = temp2.replaceAll("transcript","");
+        temp2 = temp2.replaceAll(":","");
+        temp2 = temp2.replaceAll("\"","");
+        temp2 = temp2.replaceAll("\\x5b","");
+        temp2 = temp2.replaceAll("\\x5d","");
+        temp2 = temp2.replaceAll("\\x7b","");
+        temp2 = temp2.replaceAll("\\x7d","");
+        temp2 = temp2.replaceAll("\\d","");
+        temp2 = temp2.replaceAll(".,","");
+        temp2 = temp2.replaceAll("  ","");
+
+        return temp2;
+    }
+}
