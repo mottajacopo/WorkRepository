@@ -3,7 +3,6 @@ package com.example.motta.recorderspeakerspeech;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,8 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 
 import  static com.example.motta.recorderspeakerspeech.SupportFunctions.removeChar;
 
@@ -28,8 +25,8 @@ public class STT extends AsyncTask<String, String, Void> {
 
     private static final String TAG = "STT";
     private Context mContext;
-    private String temp;
-    private boolean result;
+    private String result;
+    private boolean verification;
 
     public STT(Context context){
         mContext = context;
@@ -66,24 +63,15 @@ public class STT extends AsyncTask<String, String, Void> {
                 public void onTranscription(SpeechRecognitionResults transcript) {
                     System.out.println(transcript);
 
-                    boolean result = false;
-
-                    temp = transcript.getResults().get(0).getAlternatives().toString();
-                    temp = removeChar(temp);
-                    /*
-                    for(int i =0; i< transcript.getResults().size(); i++)
-                    {
-                        temp = transcript.getResults().get(i).getAlternatives().toString();
-                        temp = removeChar(temp);
-                        //if(temp.contains(mContext.getString(R.string.check_phrase)))
-                    }
-*/
+                    verification = false;
+                    result = transcript.getResults().get(0).getAlternatives().toString();
+                    result = removeChar(result);
                 }
             });
             //delay 10 sec
             Thread.currentThread().sleep(5000);
-            if(temp.equals(mContext.getString(R.string.check_phrase))){
-                result = true;
+            if(result.equals(mContext.getString(R.string.check_phrase))){
+                verification = true;
             }
         }
         catch (FileNotFoundException e){
@@ -98,15 +86,12 @@ public class STT extends AsyncTask<String, String, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        if(result) {
-            Toast.makeText(mContext, "Verification succeeded" + "\n" + "result = " + temp, Toast.LENGTH_LONG).show();
+        if(verification) {
+            Toast.makeText(mContext, "Verification succeeded" + "\n" + "result = " + result, Toast.LENGTH_LONG).show();
         }
         else{
-            Toast.makeText(mContext, "Verification failed" + "\n" + "result = " + temp, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "Verification failed" + "\n" + "result = " + result, Toast.LENGTH_LONG).show();
         }
-
     }
-
-
 }
 
