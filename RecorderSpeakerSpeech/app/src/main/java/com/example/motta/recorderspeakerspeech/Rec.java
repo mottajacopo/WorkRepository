@@ -44,7 +44,7 @@ import  static com.example.motta.recorderspeakerspeech.SupportFunctions.printFea
 public class Rec extends AsyncTask<String,Void,String> {
 
     private final String TAG = "Rec";
-    private final double frameLenght = 0.02;
+    private double frameLength = 0;
     private Context context = null;
 
     private int speaker = 0;
@@ -63,16 +63,17 @@ public class Rec extends AsyncTask<String,Void,String> {
 
     private boolean trainingOrTesting = false;
 
-    public Rec(Context _context, int _recordingLenghtInSec, int _Fs,int _speaker , String _speakerName)
+    public Rec(Context _context, int _recordingLenghtInSec, int _Fs,int _speaker , String _speakerName , Double _frameLength)
     {
 
         speaker = _speaker;
         speakerName = _speakerName;
+        frameLength = _frameLength;
         context = _context;
         recordingLenghtInSec = _recordingLenghtInSec;
         Fs = _Fs;
         nSamples = _recordingLenghtInSec * _Fs;
-        nSamplesPerFrame = (int) (frameLenght * _Fs);
+        nSamplesPerFrame = (int) (frameLength * _Fs);
 
         audioData = new short[nSamples]; //oppure passo direttamente l'array alla main activity per poi gestirlo li
 
@@ -390,15 +391,30 @@ public class Rec extends AsyncTask<String,Void,String> {
                     modelList.get(i).SV = data;
                 }
 
-                //svm.svm_save_model(storeDir + "/model.txt",model);
-                check = new File( storeDir +"/testDataFormat" + speakerName+ Integer.toString(numberOfTest) + ".txt");
+                if(speakerName == null){
 
-                while(check.exists()) {
-                    numberOfTest++;
+                    //svm.svm_save_model(storeDir + "/model.txt",model);
                     check = new File( storeDir +"/testDataFormat" + speakerName+ Integer.toString(numberOfTest) + ".txt");
-                }
 
-                printFeaturesOnFileFormat(cepCoeffPerFrame, deltadelta, storeDir + "/testDataFormat" + speakerName + numberOfTest + ".txt", speaker);
+                    while(check.exists()) {
+                        numberOfTest++;
+                        check = new File( storeDir +"/testDataFormat" + speakerName+ Integer.toString(numberOfTest) + ".txt");
+                    }
+
+                    printFeaturesOnFileFormat(cepCoeffPerFrame, deltadelta, storeDir + "/testDataFormat" + speakerName + numberOfTest + ".txt", speaker);
+
+                }
+                else{
+                    //svm.svm_save_model(storeDir + "/model.txt",model);
+                    check = new File( storeDir +"/" + speakerName+ Integer.toString(numberOfTest) + ".txt");
+
+                    while(check.exists()) {
+                        numberOfTest++;
+                        check = new File( storeDir +"/" + speakerName+ Integer.toString(numberOfTest) + ".txt");
+                    }
+
+                    printFeaturesOnFileFormat(cepCoeffPerFrame, deltadelta, storeDir + "/" + speakerName + numberOfTest + ".txt", speaker);
+                }
 
                 ArrayList<double[]> union = uniteAllFeaturesInOneList(cepCoeffPerFrame, deltadelta);//converto i dati di test in un array di svm_node
                 svm_node[][] testData = new svm_node[numberOfFramesPerSpeaker][totalNumberOfFeatures + 1];
