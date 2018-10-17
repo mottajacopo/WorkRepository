@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Labyrinth
+namespace Example_lab
 {
     public static class H // Helpers
     {
@@ -34,16 +34,15 @@ namespace Labyrinth
         }
 
 
-        public static Point HeroPosition()
+        public static Point heroPosition()
         {
             return (C.WINDOWSOFFSET + V.currentHeroPosition * C.PIXELSXPOINT);
         }
 
-        public static Point BrickPosition()
+        public static Point spritePosition()
         {
-            return (C.WINDOWSOFFSET + V.currentBrickPosition * C.PIXELSXPOINT);
+            return (C.WINDOWSOFFSET + V.currentSpritePosition * C.PIXELSXPOINT);
         }
-
 
         public static Vector2 ToVector2(this Point point)
         {

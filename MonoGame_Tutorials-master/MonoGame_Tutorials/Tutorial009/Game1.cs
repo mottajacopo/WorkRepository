@@ -58,7 +58,7 @@ namespace Tutorial009
             Up = Keys.W,
             Down = Keys.S,
           },
-          Position = new Vector2(100, 100),
+          Position = new Vector2(250, 100),
           Colour = Color.Blue,
           Speed = 5,
         },

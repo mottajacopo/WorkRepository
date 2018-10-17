@@ -7,11 +7,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Labyrinth
+namespace Example_lab
 {
     public static class V // Variables
     {
-        
+        //variabile che prendo da un file di testo
 
         public static int labyrinthMatrixColumns;
         public static int labyrinthMatrixRows;
@@ -23,7 +23,7 @@ namespace Labyrinth
         public static Texture2D heroDamaged;
 
         public static Point currentHeroPosition;
-        public static Point currentBrickPosition;
+        public static Point currentSpritePosition;
 
         public static List<Point> labEnter = new List<Point>();
         public static List<Point> labExit = new List<Point>();

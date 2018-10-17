@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Labyrinth.Models;
-using Labyrinth.Sprites;
-using Labyrinth.Manager;
+using Example_lab.Models;
+using Example_lab.Sprites;
 
-namespace Labyrinth
+namespace Example_lab
 {
     public partial class Game1 // prima era class LabyrinthMngmnt
     {
@@ -24,7 +23,7 @@ namespace Labyrinth
             //in data ho tutti i caratteri
 
             //creo la matrice di stringe
-            var lines = data.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = data.Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
 
             V.labyrinthMatrixColumns = lines[0].Length;
             V.labyrinthMatrixRows = lines.Length;
@@ -43,10 +42,10 @@ namespace Labyrinth
                 {
                     switch (ca[j])
                     {
-                        case '0':
+                        case '0' :
                             V.labyrinthMatrix[i, j] = '0';
                             break;
-                        case '1':
+                        case '1' :
                             V.labyrinthMatrix[i, j] = '1';
                             break;
                         case 'L':
@@ -58,103 +57,92 @@ namespace Labyrinth
                         case 'F':
                             V.labyrinthMatrix[i, j] = 'F';
                             break;
-                        case 'I':
+                        case 'I' :
                             V.labyrinthMatrix[i, j] = 'I';
-                            V.labEnter.Add(new Point(j, i));
+                            V.labEnter.Add(new Point(j,i));
                             break;
-                        case 'E':
+                        case 'E' :
                             V.labyrinthMatrix[i, j] = 'E';
-                            V.labExit.Add(new Point(j, i));
+                            V.labExit.Add(new Point(j,i));
                             break;
                     }
                 }
             }
         }
 
-        public List<Map> FillLabyrinth(SpriteBatch sp , List<Map> _map)
+        public void FillLabyrinth(SpriteBatch sp , List<Sprite> _sprites)
         {
             Texture2D brick = C.brickGrass; // lo uso come brick defauld
-           
 
             for (int i = 0; i < V.labyrinthMatrixRows; i++)
             {
 
                 for (int j = 0; j < V.labyrinthMatrixColumns; j++)
                 {
-                    V.currentBrickPosition = new Point(j, i);
+                    V.currentSpritePosition = new Point(j, i);
                     switch (V.labyrinthMatrix[i, j])
                     {
                         case '0':
                             brick = C.brickGrass;
-                            
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = '0',
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
                             });
                             break;
                         case '1':
                             brick = C.brickWall;
-                            
-
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = '1',
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
                             });
-                            
                             break;
                         case 'I':
                             brick = C.brickStart;
-                            
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = 'I',
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
                             });
                             break;
                         case 'L':
                             brick = C.brickLava;
-                            
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = 'L',
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
                             });
                             break;
                         case 'F':
                             brick = C.brickEnd2;
-                            
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = 'F',
-                            });
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
+                    });
                             break;
                         case 'D':
                             brick = C.brickDiamond;
-                            
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = 'D',
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
                             });
                             break;
                         case 'E':
                             brick = C.brickEnd;
-                            
-                            _map.Add(new Map(brick)
+                            _sprites.Add(new Sprite(new Dictionary<string, Animation>())
                             {
-                                Position = H.ToVector2(H.BrickPosition()),
-                                ID = 'E',
+                                Position = H.ToVector2(H.spritePosition()),
+                                Texture = brick,
                             });
                             break;
                     }
                     //disegno il labirinto
-                    //sp.Draw(brick, new Rectangle(H.PointToPixel(new Point(j, i)), C.PIXELSXPOINT), Color.White);
+                    //sp.Draw(brick , new Rectangle(H.PointToPixel(new Point(j,i)) , C.PIXELSXPOINT) , Color.White);
                 }
             }
-            return _map;
         }
     }
 }
