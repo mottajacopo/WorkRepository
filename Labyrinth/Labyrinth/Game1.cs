@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Labyrinth.Models;
 using Labyrinth.Sprites;
+using Labyrinth.Manager;
 
 namespace Labyrinth
 {
@@ -15,7 +17,7 @@ namespace Labyrinth
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
 
-    private List<Sprite> _sprites;
+    public List<Sprite> _sprites;
 
     public Game1()
     {
@@ -63,26 +65,37 @@ namespace Labyrinth
       V.currentHeroPosition = V.labEnter[0];
 
       var playerTexture = Content.Load<Texture2D>("Hero");
+            var animations = new Dictionary<string, Animation>()
+      {
+            { "WalkRight", new Animation(Content.Load<Texture2D>("Player/ZeldaRight"), 3) },
+            { "WalkUp", new Animation(Content.Load<Texture2D>("Player/ZeldaUp"), 3) },
+            { "WalkDown", new Animation(Content.Load<Texture2D>("Player/ZeldaDown"), 3) },
+            { "WalkLeft", new Animation(Content.Load<Texture2D>("Player/ZeldaLeft"), 3) },
+      };
 
             _sprites = new List<Sprite>()
       {
-        new Player(playerTexture)
+        new Sprite(new Dictionary<string, Animation>()
         {
+            { "WalkRight", new Animation(Content.Load<Texture2D>("Player/ZeldaRight"), 3) },
+            { "WalkUp", new Animation(Content.Load<Texture2D>("Player/ZeldaUp"), 3) },
+            { "WalkDown", new Animation(Content.Load<Texture2D>("Player/ZeldaDown"), 3) },
+            { "WalkLeft", new Animation(Content.Load<Texture2D>("Player/ZeldaLeft"), 3) },
+          
+        })
+        {
+          Position = H.ToVector2(H.heroPosition()),
           Input = new Input()
           {
-            Left = Keys.A,
-            Right = Keys.D,
             Up = Keys.W,
             Down = Keys.S,
+            Left = Keys.A,
+            Right = Keys.D,
           },
-          Position = new Vector2(45 , 300),
-          Colour = Color.White,
-          Speed = 5,
-          
-          
-        }
+        },
+        
       };
-    }
+        }
 
     /// <summary>
     /// UnloadContent will be called once per game and is the place to unload
@@ -117,10 +130,11 @@ namespace Labyrinth
       spriteBatch.Begin();
 
       ReadLabyrinthSpec(V.labyrinthMatrix, C.LabyrinthPathName);
-      FillLabyrinth(spriteBatch);
+      FillLabyrinth(spriteBatch , _sprites);
 
       foreach (var sprite in _sprites)
         sprite.Draw(spriteBatch);
+       
 
       spriteBatch.End();
 

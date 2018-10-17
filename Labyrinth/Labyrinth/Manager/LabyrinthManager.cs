@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Labyrinth.Models;
+using Labyrinth.Sprites;
+using Labyrinth.Manager;
 
 namespace Labyrinth
 {
@@ -68,7 +71,7 @@ namespace Labyrinth
             }
         }
 
-        public void FillLabyrinth(SpriteBatch sp)
+        public void FillLabyrinth(SpriteBatch sp , List<Sprite> _sprites)
         {
             Texture2D brick = C.brickGrass; // lo uso come brick defauld
 
@@ -81,24 +84,44 @@ namespace Labyrinth
                     {
                         case '0':
                             brick = C.brickGrass;
+
                             break;
                         case '1':
                             brick = C.brickWall;
+                            /*
+                            _sprites.Add(new Sprite(brick)
+                            {
+                                Position = H.ToVector2(new Point (j,i)),
+                                Input = new Input()
+                                {
+                                    Up = Keys.I,
+                                    Down = Keys.O,
+                                    Left = Keys.H,
+                                    Right = Keys.K,
+                                },
+                                
+                            });
+                            */
                             break;
                         case 'I':
                             brick = C.brickStart;
+                            
                             break;
                         case 'L':
                             brick = C.brickLava;
+                            
                             break;
                         case 'F':
                             brick = C.brickEnd2;
+                            
                             break;
                         case 'D':
                             brick = C.brickDiamond;
+                            
                             break;
                         case 'E':
                             brick = C.brickEnd;
+                            
                             break;
                     }
                     //disegno il labirinto
