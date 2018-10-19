@@ -41,10 +41,18 @@ namespace Labyrinth
                 char[] ca = lines[i].ToCharArray();
                 for (int j = 0; j < V.labyrinthMatrixColumns; j++)
                 {
+                    int dice = H.Random();
                     switch (ca[j])
                     {
                         case '0':
-                            V.labyrinthMatrix[i, j] = '0';
+                            if (dice == 5)   // soluzione temporanea cannoni (poi usiamo la classe )
+                            {
+                                V.labyrinthMatrix[i, j] = 'C';
+                            }
+                            else
+                            {
+                                V.labyrinthMatrix[i, j] = '0';
+                            }
                             break;
                         case '1':
                             V.labyrinthMatrix[i, j] = '1';
@@ -71,42 +79,44 @@ namespace Labyrinth
             }
         }
 
-        public List<Map> FillLabyrinth(SpriteBatch sp , List<Map> _map)
+        public List<Map> FillLabyrinth(SpriteBatch sp, List<Map> _map )
         {
             Texture2D brick = C.brickGrass; // lo uso come brick defauld
-           
 
+            int[,] k = V.labyrinthMatrix;
             for (int i = 0; i < V.labyrinthMatrixRows; i++)
             {
 
                 for (int j = 0; j < V.labyrinthMatrixColumns; j++)
                 {
+                    int dice = H.Random();
                     V.currentBrickPosition = new Point(j, i);
                     switch (V.labyrinthMatrix[i, j])
                     {
                         case '0':
-                            brick = C.brickGrass;
                             
+                            brick = C.brickGrass;
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
                                 ID = '0',
                             });
+
                             break;
                         case '1':
                             brick = C.brickWall;
-                            
+
 
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
                                 ID = '1',
                             });
-                            
+
                             break;
                         case 'I':
                             brick = C.brickStart;
-                            
+
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
@@ -115,7 +125,7 @@ namespace Labyrinth
                             break;
                         case 'L':
                             brick = C.brickLava;
-                            
+
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
@@ -124,7 +134,7 @@ namespace Labyrinth
                             break;
                         case 'F':
                             brick = C.brickEnd2;
-                            
+
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
@@ -133,7 +143,7 @@ namespace Labyrinth
                             break;
                         case 'D':
                             brick = C.brickDiamond;
-                            
+
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
@@ -142,16 +152,33 @@ namespace Labyrinth
                             break;
                         case 'E':
                             brick = C.brickEnd;
-                            
+
                             _map.Add(new Map(brick)
                             {
                                 Position = H.ToVector2(H.BrickPosition()),
                                 ID = 'E',
                             });
                             break;
+
+                        case 'C':
+
+                            brick = C.brickGrass;
+                            _map.Add(new Map(brick)
+                            {
+                                Position = H.ToVector2(H.BrickPosition()),
+                                ID = 'C',
+                            });
+
+                            brick = C.cannon6;
+
+                            _map.Add(new Map(C.cannon6)
+                            {
+                                Position = H.ToVector2(H.BrickPosition()),
+                                ID = 'C',
+                            });
+                            break;
                     }
-                    //disegno il labirinto
-                    //sp.Draw(brick, new Rectangle(H.PointToPixel(new Point(j, i)), C.PIXELSXPOINT), Color.White);
+
                 }
             }
             return _map;

@@ -19,15 +19,26 @@ namespace Labyrinth
 
         public static Rectangle labyrinthRect;
 
-        public static Texture2D hero;
-        public static Texture2D heroDamaged;
 
         public static Point currentHeroPosition;
         public static Point currentBrickPosition;
+        public static Vector2 deathHeroPoisition;
+
+        public static int deathCount;
+        public static int playerHealth;
 
         public static List<Point> labEnter = new List<Point>();
         public static List<Point> labExit = new List<Point>();
 
+        public static string animationUp;
+        public static string animationDown;
+        public static string animationLeft;
+        public static string animationRight;
+        public static string animationDied;
+
+
+        public static int score;
+        
 
     }
 }
