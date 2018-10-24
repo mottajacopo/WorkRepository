@@ -201,7 +201,7 @@ namespace Labyrinth.Sprites
 
         public bool IsTouchingRight(Map map)
         {
-            return this.Rectangle.Left + this.Velocity.X < map.Rectangle.Right  &&
+            return this.Rectangle.Left + this.Velocity.X < map.Rectangle.Right  + 10 &&
               this.Rectangle.Right > map.Rectangle.Right &&
               this.Rectangle.Bottom > map.Rectangle.Top &&
               this.Rectangle.Top < map.Rectangle.Bottom;
