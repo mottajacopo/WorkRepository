@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -8,6 +7,8 @@ using Labyrinth.Sprites;
 using Labyrinth.Manager;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Labyrinth
 {
@@ -38,6 +39,7 @@ namespace Labyrinth
             graphics.PreferredBackBufferWidth = C.MAINWINDOW.X;
             graphics.PreferredBackBufferHeight = C.MAINWINDOW.Y;
 
+            this.IsMouseVisible = true;
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -46,6 +48,8 @@ namespace Labyrinth
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Services.AddService(typeof(SpriteBatch), spriteBatch);  //prof
 
             C.brickWall = Content.Load<Texture2D>("mossy");
             C.brickGrass = Content.Load<Texture2D>("grass");
@@ -75,7 +79,15 @@ namespace Labyrinth
             V.animationLeft = "WalkLeft";
             V.animationRight = "WalkRight";
             V.animationDied = "HasDied";
- 
+
+            C.gameFont = Content.Load<SpriteFont>("Prof/SpriteFont");             //prof
+            C.bulletTexture = Content.Load<Texture2D>("Prof/Bullet");            //prof
+            C.explosion = Content.Load<SoundEffect>("Prof/explosion");      //prof
+            C.newBullet = Content.Load<SoundEffect>("Prof/newBullet");      //prof
+            C.backMusic = Content.Load<Song>("Prof/background");             //prof
+
+            MediaPlayer.Play(C.backMusic); //prof
+
             V.deathCount = 0;
             V.playerHealth = 100;
 
@@ -149,6 +161,8 @@ namespace Labyrinth
 
         protected override void Update(GameTime gameTime)
         {
+            DoGameLogic();
+
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             foreach (var player in _player)
@@ -176,6 +190,42 @@ namespace Labyrinth
             }
 
             base.Update(gameTime);
+        }
+
+        private void DoGameLogic()
+        {
+            bool hasColision = false;
+
+            foreach (GameComponent gc in Components)
+            {
+                if (gc is Bullets)
+                {
+                    //verify collision with hero
+                }
+            }
+            Start();
+            CheckForNewBullet();
+        }
+
+        private void CheckForNewBullet()
+        {
+            if (System.Environment.TickCount - V.lastTickCount > C.ADDBULLETTIME)
+            {
+                V.lastTickCount = System.Environment.TickCount;
+                Components.Add(new Bullets(this, ref C.bulletTexture));
+                C.newBullet.Play();
+                V.bulletCount++;
+            }
+        }
+
+        private void Start()
+        {
+            for (int i = 0; i < C.STRTBULLETCOUNT; i++)
+            {
+                Components.Add(new Bullets(this, ref C.bulletTexture));
+            }
+            V.lastTickCount = System.Environment.TickCount;
+            V.bulletCount = C.STRTBULLETCOUNT;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -206,7 +256,9 @@ namespace Labyrinth
 
             spriteBatch.End();
 
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
             base.Draw(gameTime);
+            spriteBatch.End();
         }
     }
 }

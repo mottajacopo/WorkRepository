@@ -51,6 +51,7 @@ namespace Tutorial006.Sprites
     public virtual void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Draw(_texture, Position, null, Color.White, _rotation, Origin, 1, SpriteEffects.None, 0);
+        
     }
 
     public object Clone()

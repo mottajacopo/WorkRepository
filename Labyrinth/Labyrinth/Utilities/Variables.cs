@@ -39,7 +39,12 @@ namespace Labyrinth
 
 
         public static int score;
-        
+
+        public static int lastTickCount;                 //prof
+        public static int bulletCount;                   //prof
+                                                         //prof
+        public static Rectangle labyrinthPixels;         //prof
+
 
     }
 }
